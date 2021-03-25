@@ -492,6 +492,7 @@
 
 .personal_info{
     padding: 90px 0px;
+    overflow: hidden;
     .title_section {
         margin-bottom: calc(30px + (60 - 30) * ((100vw - 320px) / (1920 - 320)));
     }

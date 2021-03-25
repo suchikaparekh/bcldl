@@ -704,7 +704,8 @@ button:focus {
               transform: scale(1.1); }
 
 .personal_info {
-  padding: 90px 0px; }
+  padding: 90px 0px;
+  overflow: hidden; }
   .personal_info .title_section {
     margin-bottom: calc(30px + (60 - 30) * ((100vw - 320px) / (1920 - 320))); }
   @media only screen and (max-width: 1366px) {
