@@ -1,0 +1,110 @@
+// Menu Start
+
+.navbar {
+    position: absolute;
+    z-index: 3;
+    top: 40px;
+    width: 100%;
+    transition: 0.2s all ease;
+    background-color: rgba(51, 51, 51, 1);
+    padding: 5px 0 5px 0;
+    @include respond-to($screen991) {
+        top: 0;
+        position: fixed;
+    }
+    .navbar-brand {
+        margin: 0 0 0 0;
+        img {
+            width: 200px;
+            @include respond-to($screen575) {
+                width: 170px;
+            }
+        }
+    }
+    .navbar-nav {
+        margin-left: auto;
+        @include respond-to($screen991) {
+            padding: 20px 0;
+        }
+        .nav-item {
+            .nav-link {
+                font-size: 16px;
+                color: $colorwhite;
+                text-transform: capitalize;
+                letter-spacing: 0.02em;
+                font-weight: 500;
+                padding: 10px 40px 10px 0px;
+                position: relative;
+                transition: 0.3s all ease;
+                &:hover {
+                    color: $themecolor1;
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        left: 0;
+                        bottom: 0;
+                        width: 40px;
+                        height: 1px;
+                        transition: 0.3s all ease;
+                        background-color: $themecolor1;
+                    }
+                }
+                &.active {
+                    color: $themecolor1;
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        left: 0;
+                        bottom: 0;
+                        width: 40px;
+                        height: 1px;
+                        background-color: $themecolor1;
+                    }
+                }
+            }
+            &:last-child {
+                .nav-link {
+                    padding: 10px 40px 10px 0px;
+                }
+            }
+        }
+    }
+    &.sticky {
+        position: fixed !important;
+        top: 0 !important;
+        width: 100% !important;
+        animation: smoothScroll 1s forwards;
+        transition: 0.2s all ease;
+        @include respond-to($screen991) {
+            animation: none;
+        }
+        &.navbar {
+            .navbar-brand {
+                img {
+                    width: 170px;
+                }
+            }
+        }
+    }
+    .navbar-toggler {
+        color: $colorwhite;
+        border: 1px solid #dddddd;
+        padding: 7px 12px;
+        font-size: calc(16px + (22 - 16) * ((100vw - 320px) / (1920 - 320)));
+        margin: 1px 0px 0 0;
+        &:focus {
+            box-shadow: none;
+        }
+    }
+}
+
+@keyframes smoothScroll {
+    0% {
+        transform: translateY(-40px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+// Menu End

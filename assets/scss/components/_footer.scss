@@ -1,0 +1,31 @@
+
+// == Footer Section Start
+
+footer{
+    position: relative;
+    background-color: $textdark;
+    padding: 20px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #545454;
+    img{
+        width: 220px;
+        @include respond-to($screen420) {
+            width: 170px;
+        }
+    }
+}
+.copywrite_section{
+    background-color: $textdark;
+    text-align: center;
+    label{
+        padding: 12px 0px;
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 0.04em;
+        color: $colorwhite;
+    }
+}
+
+// == Footer Section End

@@ -1,0 +1,405 @@
+
+//------------------------------------------
+// PREFIX 1 Start
+//------------------------------------------
+@mixin prefix($property, $value, $prefixes) {
+    @each $prefix in $prefixes {
+      @if $prefix == webkit {
+        -webkit-#{$property}: $value;
+      } @else if $prefix == moz {
+        -moz-#{$property}: $value;
+      } @else if $prefix == ms {
+        -ms-#{$property}: $value;
+      } @else if $prefix == o {
+        -o-#{$property}: $value;
+      } @else if $prefix == spec {
+        #{$property}: $value;
+      } @else  {
+        @warn 'Unrecognized prefix: #{$prefix}';
+      }
+    }
+  }
+  
+  // Variable settings
+  $prefix-for-webkit:    true !default;
+  $prefix-for-mozilla:   true !default;
+  $prefix-for-microsoft: true !default;
+  $prefix-for-opera:     true !default;
+  $prefix-for-spec:      true !default;
+  
+  @mixin prefixer ($property, $value, $prefixes) {
+    @each $prefix in $prefixes { 
+      @if $prefix == webkit {
+        @if $prefix-for-webkit {
+          -webkit-#{$property}: $value;
+        }
+      }
+      @else if $prefix == moz {
+        @if $prefix-for-mozilla {
+          -moz-#{$property}: $value;
+        }
+      }
+      @else if $prefix == ms {
+        @if $prefix-for-microsoft {
+          -ms-#{$property}: $value;
+        }
+      }
+      @else if $prefix == o {
+        @if $prefix-for-opera {
+          -o-#{$property}: $value;
+        }
+      }
+      @else if $prefix == spec {
+        @if $prefix-for-spec {
+          #{$property}: $value;
+        }
+      }
+      @else  {
+        @warn "Unrecognized prefix: #{$prefix}";
+      }
+    }
+  }
+  @mixin display($value) {
+    @if $value == "flex" {
+      display: -webkit-box;
+      display: -moz-box;
+      display: box;
+      display: -webkit-flex;
+      display: -moz-flex;
+      display: -ms-flexbox; 
+      display: flex;
+    }
+  
+    @else if $value == "inline-flex" {
+      display: -webkit-inline-box;
+      display: -moz-inline-box;
+      display: inline-box;
+      display: -webkit-inline-flex;
+      display: -moz-inline-flex;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+    }
+    @else {
+      display: $value;
+    }
+  }
+  
+  @mixin flex($value) {
+    $flex-grow: nth($value, 1);
+    @include prefixer(box-flex, $value, webkit moz spec);
+    @include prefixer(flex, $value, webkit moz ms spec);
+  }
+  @mixin flex-direction($value: row) {
+    $value-2009: $value;
+    $value-2011: $value;
+    $direction: "normal";
+  
+    @if $value == row {
+      $value-2009: horizontal;
+    }
+  
+    @else if $value == "row-reverse" {
+      $value-2009: horizontal;
+      $direction: reverse;
+    }
+  
+    @else if $value == column {
+      $value-2009: vertical;
+    }
+  
+    @else if $value == "column-reverse" {
+      $value-2009: vertical;
+      $direction: reverse;
+    }
+    @include prefixer(box-orient, $value, webkit moz spec);
+    @if $direction == "reverse" {
+      @include prefixer(box-direction, $value, webkit moz spec);
+    }
+    @include prefixer(flex-direction, $value, webkit moz spec);
+    -ms-flex-direction: $value;
+  }
+  
+  @mixin flex-wrap($value: nowrap) {
+    $alt-value: $value;
+    @if $value == nowrap {
+      $alt-value: single;
+    }
+    @else if $value == wrap {
+      $alt-value: multiple;
+    }
+  
+    @else if $value == "wrap-reverse" {
+      $alt-value: multiple;
+    }
+    @include prefixer(box-lines, $value, webkit moz spec);
+    @include prefixer(flex-wrap, $value, webkit moz ms spec);
+  }
+  @mixin flex-flow($value) {
+    @include prefixer(flex-flow, $value, webkit moz spec);
+  }
+  @mixin order($int: 0) {
+    @include prefixer(box-ordinal-group, $int, webkit moz spec);
+    @include prefixer(order, $int, webkit moz spec);
+    -ms-flex-order: $int;
+  }
+  @mixin flex-grow($number: 0) {
+    @include prefixer(flex-grow, $number, webkit moz spec);
+    -ms-flex-positive: $number;
+  }
+  @mixin flex-shrink($number: 1) {
+    @include prefixer(flex-shrink, $number, webkit moz spec);
+    -ms-flex-negative: $number;
+  }
+  @mixin flex-basis($width: auto) {
+    @include prefixer(flex-basis, $width, webkit moz spec);
+    -ms-flex-preferred-size: $width;
+  }
+  @mixin justify-content ($value: flex-start) {
+    $alt-value: $value;
+    @if $value == "flex-start" {
+      $alt-value: start;
+    }
+    @else if $value == "flex-end" {
+      $alt-value: end;
+    }
+    @else if $value == "space-between" {
+      $alt-value: justify;
+    }
+    @else if $value == "space-around" {
+      $alt-value: center;
+    }
+    @include prefixer(box-pack, $alt-value, webkit moz spec);
+    @include prefixer(justify-content, $value, webkit moz ms o spec);
+    -ms-flex-pack: $alt-value;
+  }
+  @mixin align-items($value: stretch) {
+    $alt-value: $value;
+    @if $value == "flex-start" {
+      $alt-value: start;
+    }
+    @else if $value == "flex-end" {
+      $alt-value: end;
+    }
+    @include prefixer(box-align, $alt-value, webkit moz spec);
+    @include prefixer(align-items, $value, webkit moz ms o spec);
+    -ms-flex-align: $alt-value;
+  }
+  
+  @mixin align-self($value: auto) {
+    $value-2011: $value;
+    @if $value == "flex-start" {
+      $value-2011: start;
+    }
+    @else if $value == "flex-end" {
+      $value-2011: end;
+    }
+    @include prefixer(align-self, $value, webkit moz spec);
+    -ms-flex-item-align: $value-2011;
+  }
+  
+  @mixin align-content($value: stretch) {
+    $value-2011: $value;
+    @if $value == "flex-start" {
+      $value-2011: start;
+    }
+    @else if $value == "flex-end" {
+      $value-2011: end;
+    }
+    @else if $value == "space-between" {
+      $value-2011: justify;
+    }
+    @else if $value == "space-around" {
+      $value-2011: distribute;
+    }
+    @include prefixer(align-content, $value, webkit moz spec);
+    -ms-flex-line-pack: $value-2011;
+  }
+  @mixin opacity($value){
+    -moz-opacity: $value;
+    -khtml-opacity: $value;
+    opacity: $value;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity="+$value")";
+    filter: alpha(opacity=$value);
+  }
+// @include prefix(box-sizing, border-box, webkit ms spec o moz);
+  
+//------------------------------------------
+// PREFIX 1 End 
+//------------------------------------------
+
+//------------------------------------------
+// PREFIX 2 Start
+//------------------------------------------
+  @mixin prefixcss($property, $value, $prefixes: ()) {
+    @each $prefix in $prefixes {
+      #{'-' + $prefix + '-' + $property}: $value;
+    }
+    // Output standard non-prefixed declaration
+    #{$property}: $value;
+    // @include prefixcss(transform, rotate(45deg), webkit ms);
+  }
+  
+  // cross browser mixin //
+  
+  // IE
+  @mixin IE {
+    @media screen and (min-width:0\0) {
+      @content;
+    }
+  }
+  
+  // Edge
+  @mixin edge {
+    @supports (-ms-ime-align:auto) {
+      @content;
+    }
+  }
+  
+  // print
+  @mixin print {
+    @media print {
+      @content;
+    }
+  }
+  
+//------------------------------------------
+// PREFIX 2 End
+//------------------------------------------
+  
+  
+//------------------------------------------
+// Responsive Screen Start 
+//------------------------------------------
+  
+  @mixin respond-to($class) {
+    @if $class == $screen1800 {
+      @media only screen and (max-width: $screen1800) {
+        @content;
+      }
+    }@if $class == $screen1600 {
+      @media only screen and (max-width: $screen1600) {
+        @content;
+      }
+    }
+    @if $class == $screen1440 {
+      @media only screen and (max-width: $screen1440) {
+        @content;
+      }
+    }
+    @if $class == $screen1366 {
+      @media only screen and (max-width: $screen1366) {
+        @content;
+      }
+    }
+    @if $class == $screen1199 {
+      @media only screen and (max-width: $screen1199) {
+        @content;
+      } 
+    }
+    @if $class == $screen991 {
+      @media only screen and (max-width: $screen991) {
+        @content;
+      }
+    }
+    @if $class == $screen767 {
+      @media only screen and (max-width: $screen767) {
+        @content;
+      }
+    }
+    @if $class == $screen575 {
+      @media only screen and (max-width: $screen575) {
+        @content;
+      }
+    }
+    @if $class == $screen480 {
+      @media only screen and (max-width: $screen480) {
+        @content;
+      }
+    }
+    @if $class == $screen420 {
+        @media only screen and (max-width: $screen420) {
+            @content;
+        }
+    }
+    @if $class == $screen350 {
+      @media only screen and (max-width: $screen350) {
+        @content;
+      }
+    }
+  }
+
+
+//------------------------------------------
+// Responsive Screen End 
+//------------------------------------------
+   
+  
+//------------------------------------------
+// Images mixin Start 
+//------------------------------------------
+  
+  // images path  //
+  $imagepath : "../images";
+  @function images($imagepath){
+    @return $imagepath;
+  }
+  // url(#{$imagepath}/demo.png);
+
+//------------------------------------------
+// Images mixin End 
+//------------------------------------------
+  
+  
+//------------------------------------------
+// Button mixin Start 
+//------------------------------------------
+  
+  @mixin theme_btn ($background : $bgcolor1, $textcolor : $colorwhite) {
+    position: relative;
+    text-align: center;
+    width: 100%;
+    display: block;
+    text-decoration: none;
+    text-transform: capitalize;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: $textcolor;
+    background-color: $background;
+    @if ($background == $bgcolor1) {
+      // 
+    } 
+    @else if ($background == $bgcolor2) {
+      // 
+    }
+  }
+
+//------------------------------------------
+// Button mixin End 
+//------------------------------------------
+  
+//------------------------------------------
+// Placeholder mixin Start
+//------------------------------------------
+  
+  @mixin placeholder {
+    ::placeholder               {@content}
+    ::-webkit-placeholder       {@content}
+    :-moz-placeholder           {@content}
+    ::-moz-placeholder          {@content}
+    ::-ms-placeholder           {@content}
+    :-ms-placeholder            {@content}
+  }
+  
+  @mixin transitionsec {
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+  }
+
+//------------------------------------------
+// Placeholder mixin End
+//------------------------------------------
